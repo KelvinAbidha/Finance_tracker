@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.example.finance_tracker.utils.DateConverter;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Debt Entity - Represents a single debt record
@@ -31,7 +32,6 @@ public class Debt {
     private String personName;
 
     // Amount of money owed
-    @NonNull
     @ColumnInfo(name = "amount")
     private double amount;
 
@@ -206,7 +206,7 @@ public class Debt {
     }
 
     public void setPersonName(@NonNull String personName) {
-        this.personName = personName;
+        this.personName = person.getName();
         this.dateUpdated = new Date();
     }
 
@@ -361,7 +361,7 @@ public class Debt {
      * @return Formatted string like "KES 1,500.00"
      */
     public String getFormattedAmount() {
-        return String.format("%s %.2f", currency, amount);
+        return String.format(Locale.getDefault(), "%s %.2f", currency, amount);
     }
 
     /**
