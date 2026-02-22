@@ -11,7 +11,7 @@ public class DebtCalculator {
 
         for (debt debt : debts) {
 
-            // Skip fully settled debts
+            // Skip fully settled debts always
             if (debt.isSettled()) continue;
 
             // Remaining amount (handles partial payments)..

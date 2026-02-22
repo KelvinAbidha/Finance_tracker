@@ -34,3 +34,4 @@ public interface DebtDao {
             "WHERE debt_id = :debtId")
     void markDebtAsPaid(int debtId, Date now);
 }
+// Nesh logic implemented

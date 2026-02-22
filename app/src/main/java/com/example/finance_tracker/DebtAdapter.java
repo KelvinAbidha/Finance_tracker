@@ -25,7 +25,7 @@ public class DebtAdapter extends RecyclerView.Adapter<DebtAdapter.DebtViewHolder
         this.listener = listener;
     }
 
-    // Allow MainActivity to update list with real data
+    // Allow MainActivity to update list with real data always
     public void setDebts(List<debt> debts) {
         this.debtList = debts;
         notifyDataSetChanged();
@@ -46,7 +46,7 @@ public class DebtAdapter extends RecyclerView.Adapter<DebtAdapter.DebtViewHolder
         holder.nameText.setText(currentDebt.getPersonName());
         holder.amountText.setText(currentDebt.getFormattedAmount());
 
-        // Optional: visual cue for settled debts
+        // Optional: visual cue for settled debts (optional)
         if (currentDebt.isSettled()) {
             holder.itemView.setAlpha(0.5f);
         } else {

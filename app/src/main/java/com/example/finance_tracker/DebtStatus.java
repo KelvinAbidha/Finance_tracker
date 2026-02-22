@@ -6,3 +6,4 @@ public enum DebtStatus {
     PARTIALLY_PAID,
     OVERDUE
 }
+// Good work

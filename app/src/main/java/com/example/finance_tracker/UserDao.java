@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 /**
  * UserDao - Handles database operations for the User entity.
- * Cynthia: This allows Daniel to fetch the username for the UI.
+ * Cynthia: This allows Daniel to fetch the username for the UI, logic goes here.
  */
 @Dao
 public interface UserDao {

@@ -90,6 +90,6 @@ public class MainActivity extends AppCompatActivity {
             // d.setDateUpdated(new Date());
             // debtDao.update(d);
         });
-        // LiveData observer auto-refreshes UI
+        
     }
 }
