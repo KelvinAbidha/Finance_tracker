@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 // This tells Room which tables and converters to include in the database
-@Database(entities = {Debt.class, User.class}, version = 1, exportSchema = false)
+@Database(entities = {debt.class, User.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

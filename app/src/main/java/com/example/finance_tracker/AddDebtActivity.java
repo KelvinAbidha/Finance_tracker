@@ -66,7 +66,7 @@ public class AddDebtActivity extends AppCompatActivity {
             debtType = DebtType.I_OWE;
         }
 
-        Debt newDebt = new Debt(personName, amount, debtType);
+        debt newDebt = new debt(personName, amount, debtType);
 
         new Thread(() -> {
             db.debtDao().insert(newDebt);

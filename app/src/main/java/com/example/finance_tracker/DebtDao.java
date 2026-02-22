@@ -16,14 +16,14 @@ import java.util.List;
 public interface DebtDao {
 
     @Insert
-    void insert(Debt debt); // For Deqow to save new debts
+    void insert(debt debt); // For Deqow to save new debts
 
     @Update
-    void update(Debt debt); // For Nesh to update payment status
+    void update(debt debt); // For Nesh to update payment status
 
     @Delete
-    void delete(Debt debt); // For removing records
+    void delete(debt debt); // For removing records
 
     @Query("SELECT * FROM debts ORDER BY date_created DESC")
-    LiveData<List<Debt>> getAllDebts(); // For Kerry to show the list
+    LiveData<List<debt>> getAllDebts(); // For Kerry to show the list
 }
