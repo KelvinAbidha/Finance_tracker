@@ -15,13 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List; // Added this to support Cynthia's Database results
 
+import android.widget.TextView;
+
 public class MainActivity extends AppCompatActivity {
+    private TextView tvTotalBalance; //Calculator variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        tvTotalBalance = findViewById(R.id.tvTotalBalance);
 
         // Daniel's XML uses tvTitle as the top-level ID for padding
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.tvTitle), (v, insets) -> {
@@ -50,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
             if (debts != null) {
                 // Kerry's bridge updates the list whenever Deqow saves data
                 adapter.setDebts(debts);
+
+                //Mercy: Implementing the DebtCalculator
+                double totalBalance = DebtCalculator.calculateTotalBalance(debts);
+
+                String formatted = String.format("Total Balance: KES %.2f", totalBalance);
+                tvTotalBalance.setText(formatted);
             }
         });
 
@@ -61,5 +71,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // ==========================================
+
+
+
     }
 }
