@@ -12,24 +12,53 @@ import java.util.List;
 
 public class DebtAdapter extends RecyclerView.Adapter<DebtAdapter.DebtViewHolder> {
 
+    // =========================
+    // Click Interfaces
+    // =========================
+
+    // Normal click → open details
     public interface OnDebtClickListener {
         void onDebtClick(debt d);
     }
 
-    private List<debt> debtList;
-    private final OnDebtClickListener listener;
-
-    // Kerry's Bridge + Nesh click listener
-    public DebtAdapter(List<debt> debtList, OnDebtClickListener listener) {
-        this.debtList = debtList;
-        this.listener = listener;
+    // Long click → show action options
+    public interface OnDebtLongClickListener {
+        void onDebtLongClick(debt d);
     }
 
-    // Allow MainActivity to update list with real data
+    // =========================
+    // Fields
+    // =========================
+
+    private List<debt> debtList;
+    private final OnDebtClickListener clickListener;
+    private final OnDebtLongClickListener longClickListener;
+
+    // =========================
+    // Constructor
+    // =========================
+
+    public DebtAdapter(List<debt> debtList,
+                       OnDebtClickListener clickListener,
+                       OnDebtLongClickListener longClickListener) {
+
+        this.debtList = debtList;
+        this.clickListener = clickListener;
+        this.longClickListener = longClickListener;
+    }
+
+    // =========================
+    // Update List from Room
+    // =========================
+
     public void setDebts(List<debt> debts) {
         this.debtList = debts;
         notifyDataSetChanged();
     }
+
+    // =========================
+    // Create ViewHolder
+    // =========================
 
     @NonNull
     @Override
@@ -39,33 +68,53 @@ public class DebtAdapter extends RecyclerView.Adapter<DebtAdapter.DebtViewHolder
         return new DebtViewHolder(view);
     }
 
+    // =========================
+    // Bind Data to Each Row
+    // =========================
+
     @Override
     public void onBindViewHolder(@NonNull DebtViewHolder holder, int position) {
+
         debt currentDebt = debtList.get(position);
 
+        // Display basic info
         holder.nameText.setText(currentDebt.getPersonName());
         holder.amountText.setText(currentDebt.getFormattedAmount());
 
-        // Optional: visual cue for settled debts
-        if (currentDebt.isSettled()) {
-            holder.itemView.setAlpha(0.5f);
-        } else {
-            holder.itemView.setAlpha(1.0f);
-        }
+        // Visual cue for settled debts
+        holder.itemView.setAlpha(currentDebt.isSettled() ? 0.5f : 1.0f);
 
+        // CLICK → Open Details
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onDebtClick(currentDebt);
+            if (clickListener != null) {
+                clickListener.onDebtClick(currentDebt);
             }
         });
+
+        // LONG CLICK → Show Options
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onDebtLongClick(currentDebt);
+            }
+            return true;
+        });
     }
+
+    // =========================
+    // Item Count
+    // =========================
 
     @Override
     public int getItemCount() {
         return debtList != null ? debtList.size() : 0;
     }
 
+    // =========================
+    // ViewHolder
+    // =========================
+
     public static class DebtViewHolder extends RecyclerView.ViewHolder {
+
         TextView nameText;
         TextView amountText;
 

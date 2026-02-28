@@ -17,6 +17,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.Executors;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Date;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvTotalBalance;
@@ -44,7 +49,16 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerViewDebts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new DebtAdapter(new ArrayList<>(), this::showMarkAsPaidDialog);
+        adapter = new DebtAdapter(
+                new ArrayList<>(),
+
+                // CLICK → Show Details Popup
+                d -> showDebtDetailsDialog(d),
+
+                // LONG CLICK → Show Action Options
+                d -> showDebtOptionsDialog(d)
+        );
+
         recyclerView.setAdapter(adapter);
 
         // Observe debts
@@ -59,11 +73,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Add button
-        findViewById(R.id.btnAddDebt).setOnClickListener(v -> {
+        FloatingActionButton fab = findViewById(R.id.fabAddDebt);
+        fab.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddDebtActivity.class);
             startActivity(intent);
         });
     }
+    private String formatDate(Date date) {
+        return new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date);
+    }
+    private void showDebtDetailsDialog(debt d) {
+
+
+        String message =
+                "Name: " + d.getPersonName() +
+                        "\nAmount: " + d.getFormattedAmount() +
+                        "\nDate Added: " + formatDate(d.getDateCreated()) +
+                        "\nDue Date: " + d.getDueDate();
+
+        new AlertDialog.Builder(this)
+                .setTitle("Debt Details")
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    private void showDebtOptionsDialog(debt d) {
+        String[] options = {"Mark as Paid", "Delete", "Cancel"};
+
+        new AlertDialog.Builder(this)
+                .setTitle(d.getPersonName())
+                .setItems(options, (dialog, which) -> {
+
+                    if (which == 0) {
+                        markDebtAsPaid(d);
+                    } else if (which == 1) {
+                        deleteDebt(d);
+                    }
+                    // Cancel does nothing
+                })
+                .show();
+    }
+
 
     // ========== Nesh: Settlement Logic ==========
 
@@ -81,15 +131,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void markDebtAsPaid(debt d) {
         Executors.newSingleThreadExecutor().execute(() -> {
-            // Option 1: direct query
             debtDao.markDebtAsPaid(d.getDebtId(), new Date());
-
-            // Option 2 (if you prefer entity logic):
-            // d.setSettled(true);
-            // d.setAmountPaid(d.getAmount());
-            // d.setDateUpdated(new Date());
-            // debtDao.update(d);
         });
-        // LiveData observer auto-refreshes UI
+    }
+
+    private void deleteDebt(debt d) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            debtDao.delete(d);
+        });
     }
 }

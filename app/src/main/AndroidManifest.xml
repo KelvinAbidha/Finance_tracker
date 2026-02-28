@@ -27,6 +27,11 @@
             android:name=".AddDebtActivity"
             android:exported="false" />
 
+        <!-- Debt Detail Screen -->
+        <activity
+            android:name=".DebtDetailActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

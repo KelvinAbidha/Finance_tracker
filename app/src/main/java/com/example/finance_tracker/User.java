@@ -1,6 +1,7 @@
 package com.example.finance_tracker;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.ColumnInfo;
 import androidx.annotation.NonNull;
@@ -36,7 +37,7 @@ public class User {
 
 
     // ==================== CONSTRUCTORS ====================
-
+    @Ignore
     public User(@NonNull String username) {
         this.username = username;
         this.defaultCurrency = "KES";
