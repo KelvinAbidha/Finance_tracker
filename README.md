@@ -97,5 +97,7 @@ The project utilizes strongly-typed Enums to maintain data integrity:
 4.Contact Integration: Linking the contact_info field to the device's contacts for easier communication.
  
 Version: 1.0.0
+
    Package: com.example.finance_tracker
+
    Author: Technical Documentation Team
