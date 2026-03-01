@@ -1,12 +1,11 @@
-Finance Tracker
-
-Executive Summary
-
+# Finance Tracker
+---
+## 1. Executive Summary
 Finance Tracker is an Android-based financial utility designed to help users track personal debts and receivables. Developed using Java and the Android Jetpack suite, the application provides a centralized interface for recording who owes money to the user and vice versa. By bridging the gap between casual verbal agreements and formal accounting, the app ensures financial transparency and reduces the risk of forgotten obligations.
 
-2. Product Overview
-
-2.1 Problem Statement
+---
+## 2. Product Overview
+### 2.1 Problem Statement
 
 In personal and micro-business environments, tracking "who owes whom" is often managed through memory or disorganized notes. This leads to:
 
@@ -16,7 +15,7 @@ In personal and micro-business environments, tracking "who owes whom" is often m
 
 •Lack of a clear timeline for due dates.
 
-2.2 Key Features
+### 2.2 Key Features
 
 •Dual Debt Tracking: Supports both "Owed To Me" (receivables) and "I Owe" (payables) categories.
 
@@ -28,9 +27,10 @@ In personal and micro-business environments, tracking "who owes whom" is often m
 
 •Local Persistence: Uses an on-device database to ensure data is accessible without an internet connection.
 
-3. Technical Architecture
+---
+## 3. Technical Architecture
 
-3.1 Tech Stack
+### 3.1 Tech Stack
 •Language: Java
 
 •Database: SQLite via Room Persistence Library (an abstraction layer over SQLite).
@@ -39,7 +39,7 @@ In personal and micro-business environments, tracking "who owes whom" is often m
 
 •Architecture Pattern: MVVM-ready (using LiveData and DAOs).
 
-3.2 Database Schema (Room)
+### 3.2 Database Schema (Room)
 
 The application utilizes two primary entities managed by AppDatabase:
 1.debt Entity:
@@ -55,14 +55,15 @@ The application utilizes two primary entities managed by AppDatabase:
 
 The DebtCalculator.java utility acts as the financial engine. It iterates through all non-settled debts and performs the following calculation: $$\text{Total Balance} = \sum (\text{Remaining Owed To Me}) - \sum (\text{Remaining I Owe})$$ This ensures the user sees a single, actionable number on their dashboard.
 
-4. Implementation Details
+---
+## 4. Implementation Details
 
-4.1 Data Access Objects (DAOs)
+### 4.1 Data Access Objects (DAOs)
  •DebtDao: Handles CRUD operations. It includes a specific @Query to mark a debt as paid, updating the is_settled flag, setting the status to 'PAID', and syncing the amount_paid to match the total amount in a single transaction.
 
 •UserDao: Uses LiveData to observe user profile changes, allowing the UI to reactively update the username or preferences.
 
-4.2 User Interface & Interaction
+### 4.2 User Interface & Interaction
 
 •MainActivity: Serves as the primary dashboard. It observes debtDao.getAllDebts() using LiveData. Whenever the database changes, the DebtAdapter automatically refreshes the list, and the total balance is recalculated.
 
@@ -76,7 +77,8 @@ The DebtCalculator.java utility acts as the financial engine. It iterates throug
 
 •AddDebtActivity: Provides a form to input new records, utilizing RadioGroup for debt categorization and background threads for database insertion to prevent UI freezing.
 
- 5. Status and Enum Definitions
+---
+## 5. Status and Enum Definitions
 
 The project utilizes strongly-typed Enums to maintain data integrity:
 
@@ -86,7 +88,9 @@ The project utilizes strongly-typed Enums to maintain data integrity:
 
 •PaymentMethod: CASH, MOBILE_MONEY, BANK_TRANSFER.
 
-6. Future Roadmap
+---
+
+## 6. Future Roadmap
  
 1.Multi-Currency Support: Leveraging the currency field already present in the debt entity to support exchange rates.
 
@@ -95,7 +99,9 @@ The project utilizes strongly-typed Enums to maintain data integrity:
 3.Search & Filter: Adding the ability to filter debts by status (e.g., viewing only unpaid items).
 
 4.Contact Integration: Linking the contact_info field to the device's contacts for easier communication.
- 
+
+--- 
+
 Version: 1.0.0
 
    Package: com.example.finance_tracker
