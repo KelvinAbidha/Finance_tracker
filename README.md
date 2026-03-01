@@ -17,13 +17,13 @@ In personal and micro-business environments, tracking "who owes whom" is often m
 
 ### 2.2 Key Features
 
-•Dual Debt Tracking: Supports both "Owed To Me" (receivables) and "I Owe" (payables) categories.
+•Dual Debt Tracking: Supports both "Owed To Me" (receivables) and "I Owe" (payables) categories.  
 
-•Real-time Balance Calculation: Automatically calculates the net balance (Receivables - Payables) in KES (Kenyan Shillings).
+•Real-time Balance Calculation: Automatically calculates the net balance (Receivables - Payables) in KES (Kenyan Shillings).  
 
-•Settlement Lifecycle: Allows users to mark debts as fully paid or track partial payments, with visual cues for settled items.
+•Settlement Lifecycle: Allows users to mark debts as fully paid or track partial payments, with visual cues for settled items.  
 
-•Detailed Records: Stores metadata including person names, amounts, due dates, payment methods (Cash, Mobile Money, Bank Transfer), and descriptions.
+•Detailed Records: Stores metadata including person names, amounts, due dates, payment methods (Cash, Mobile Money, Bank Transfer), and descriptions.  
 
 •Local Persistence: Uses an on-device database to ensure data is accessible without an internet connection.
 
@@ -32,27 +32,26 @@ In personal and micro-business environments, tracking "who owes whom" is often m
 
 ### 3.1 Tech Stack
 
-•Language: Java
+•Language: Java  
 
-•Database: SQLite via Room Persistence Library (an abstraction layer over SQLite).
+•Database: SQLite via Room Persistence Library (an abstraction layer over SQLite).  
 
-•UI Components: Material Design 3, RecyclerView, Floating Action Buttons (FAB), and ViewBinding/ConstraintLayouts.
+•UI Components: Material Design 3, RecyclerView, Floating Action Buttons (FAB), and ViewBinding/ConstraintLayouts.  
 
 •Architecture Pattern: MVVM-ready (using LiveData and DAOs).
 
 ### 3.2 Database Schema (Room)
 
-The application utilizes two primary entities managed by AppDatabase:
-1.debt Entity:
-◦Fields: debt_id (PK), person_name, amount, debt_type (Enum), status (Enum), date_created, is_settled, and amount_paid.
- 
+The application utilizes two primary entities managed by AppDatabase:  
+
+1.debt Entity:  
+◦Fields: debt_id (PK), person_name, amount, debt_type (Enum), status (Enum), date_created, is_settled, and amount_paid.  
 ◦Type Converters: A DateConverter utility is implemented to handle the conversion of Java Date objects into Long timestamps for SQLite storage.
 
-2.User Entity:
-
+2.User Entity:  
 ◦Stores profile information such as username, email, and default_currency (defaulting to "KES").
 
-3.3 Core Logic: The DebtCalculator
+### 3.3 Core Logic: The DebtCalculator
 
 The DebtCalculator.java utility acts as the financial engine. It iterates through all non-settled debts and performs the following calculation: $$\text{Total Balance} = \sum (\text{Remaining Owed To Me}) - \sum (\text{Remaining I Owe})$$ This ensures the user sees a single, actionable number on their dashboard.
 
@@ -61,22 +60,21 @@ The DebtCalculator.java utility acts as the financial engine. It iterates throug
 
 ### 4.1 Data Access Objects (DAOs)
 
- •DebtDao: Handles CRUD operations. It includes a specific @Query to mark a debt as paid, updating the is_settled flag, setting the status to 'PAID', and syncing the amount_paid to match the total amount in a single transaction.
+•DebtDao: Handles CRUD operations. It includes a specific @Query to mark a debt as paid, updating the is_settled flag, setting the status to 'PAID', and syncing the amount_paid to match the total amount in a single transaction.  
 
 •UserDao: Uses LiveData to observe user profile changes, allowing the UI to reactively update the username or preferences.
 
 ### 4.2 User Interface & Interaction
 
+•MainActivity: Serves as the primary dashboard. It observes debtDao.getAllDebts() using LiveData. Whenever the database changes, the DebtAdapter automatically refreshes the list, and the total balance is recalculated. 
 
-•MainActivity: Serves as the primary dashboard. It observes debtDao.getAllDebts() using LiveData. Whenever the database changes, the DebtAdapter automatically refreshes the list, and the total balance is recalculated.
+•DebtAdapter: Implements a RecyclerView with custom listeners.  
 
-•DebtAdapter: Implements a RecyclerView with custom listeners.
+◦Short Click: Triggers a detail dialog.  
 
-◦Short Click: Triggers a detail dialog.
+◦Long Click: Opens an action menu (Mark as Paid/Delete).  
 
-◦Long Click: Opens an action menu (Mark as Paid/Delete).
-
-◦Visual Feedback: Settled debts are rendered with a 0.5f alpha (transparency) to distinguish them from active debts.
+◦Visual Feedback: Settled debts are rendered with a 0.5f alpha (transparency) to distinguish them from active debts.  
 
 •AddDebtActivity: Provides a form to input new records, utilizing RadioGroup for debt categorization and background threads for database insertion to prevent UI freezing.
 
