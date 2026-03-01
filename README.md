@@ -4,15 +4,15 @@
 Finance Tracker is an Android-based financial utility designed to help users track personal debts and receivables. Developed using Java and the Android Jetpack suite, the application provides a centralized interface for recording who owes money to the user and vice versa. By bridging the gap between casual verbal agreements and formal accounting, the app ensures financial transparency and reduces the risk of forgotten obligations.
 
 ---
+
 ## 2. Product Overview
+
 ### 2.1 Problem Statement
 
-In personal and micro-business environments, tracking "who owes whom" is often managed through memory or disorganized notes. This leads to:
+In personal and micro-business environments, tracking "who owes whom" is often managed through memory or disorganized notes. This leads to:  
 
-•Forgotten debts.
-
-•Inaccurate balance tracking (mixing receivables and payables).
-
+•Forgotten debts.  
+•Inaccurate balance tracking (mixing receivables and payables).  
 •Lack of a clear timeline for due dates.
 
 ### 2.2 Key Features
@@ -31,6 +31,7 @@ In personal and micro-business environments, tracking "who owes whom" is often m
 ## 3. Technical Architecture
 
 ### 3.1 Tech Stack
+
 •Language: Java
 
 •Database: SQLite via Room Persistence Library (an abstraction layer over SQLite).
@@ -59,11 +60,13 @@ The DebtCalculator.java utility acts as the financial engine. It iterates throug
 ## 4. Implementation Details
 
 ### 4.1 Data Access Objects (DAOs)
+
  •DebtDao: Handles CRUD operations. It includes a specific @Query to mark a debt as paid, updating the is_settled flag, setting the status to 'PAID', and syncing the amount_paid to match the total amount in a single transaction.
 
 •UserDao: Uses LiveData to observe user profile changes, allowing the UI to reactively update the username or preferences.
 
 ### 4.2 User Interface & Interaction
+
 
 •MainActivity: Serves as the primary dashboard. It observes debtDao.getAllDebts() using LiveData. Whenever the database changes, the DebtAdapter automatically refreshes the list, and the total balance is recalculated.
 
@@ -102,8 +105,6 @@ The project utilizes strongly-typed Enums to maintain data integrity:
 
 --- 
 
-Version: 1.0.0
-
-   Package: com.example.finance_tracker
-
-   Author: Technical Documentation Team
+>Version: 1.0.0  
+>Package: com.example.finance_tracker  
+>Author: Technical Documentation Team
